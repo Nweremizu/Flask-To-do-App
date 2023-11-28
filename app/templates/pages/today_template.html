@@ -1,0 +1,106 @@
+{% for task in tasks %}
+    <div class="row rounded shadow-sm p-2 mb-4 task-item">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center py-2">
+                <div>
+                    <div class="form-check fs-6" style="margin-bottom: 0px;">
+                        <input class="form-check-input" type="checkbox" id="formCheck-1" data-task-id="{{ task.id }}">
+                        <input id="crsf" type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <label class="form-check-label" for="formCheck-1">{{ task.name }}</label>
+                    </div>
+                </div>
+                <div>
+                    <a href="" data-bs-target="#modal-{{ task.id }}" data-bs-toggle="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                             fill="none" stroke-linecap="round" stroke-linejoin="round"
+                             class="icon icon-tabler icon-tabler-chevrons-right fs-6">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <polyline points="7 7 12 12 7 17"></polyline>
+                            <polyline points="13 7 18 12 13 17"></polyline>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-{{ task.id }}">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-end mb-1">
+                        <a class="me-1 ms-1" href="javascript:void(0)" id="mark-done"
+                           data-modal-task-id="{{ task.id }}">
+                            <i class="la la-check-circle-o"></i>
+                        </a>
+                        <a class="ms-1" data-bs-dismiss="modal" type="button">
+                            <i class="la la-close"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <form id="taskEditForm" class="dynamic" data-modal-task-id="{{ task.id }}" method="post"
+                              action="{{ url_for('home_blueprint.update_task', task_id=task.id) }}">
+                            <div class="mb-2">
+                                <input class="form-control border-0 fw-bold" type="text" name="task_name"
+                                       placeholder="Task Name" value="{{ task.name }}">
+                            </div>
+                            <div class="mb-2 px-3">
+                                <h6 class="fw-bolder"
+                                    style="font-family: Roboto, sans-serif;font-size:12px;color: var(--bs-muted);">
+                                    NOTES</h6>
+                                <textarea class="form-control" name="task_des" placeholder="Insert Notes here"
+                                          style="font-size: 15px;">{{ task.description }}</textarea>
+                                <div class="d-flex mb-1 mt-2 px-3">
+                                    <select class="form-select me-5" name="label">
+                                        <optgroup label="Choose List Group">
+                                            {% for label in labels %}
+                                                <option value="{{ label.id }}"  {% if label.id == task.label_id %}
+                                                        selected {% endif %}>{{ label.name }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <input class="form-control border-0 fw-bold" type="date" name="due_date"
+                                           placeholder="Today" value="{{ task.due_date }}">
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <input class="btn btn-sm btn-primary" type="submit" id="submit-bTn"
+                                       value="Continue">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<!-- Start: Add Task -->
+<div class="row rounded p-2 mb-5">
+    <div class="col">
+        <div class="py-2">
+            <div>
+                <form id="AddTaskForm" method="post" action="{{ url_for('home_blueprint.add_task') }}"
+                      class="d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                         stroke-linejoin="round" class="icon icon-tabler icon-tabler-plus fs-6 addTask">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="text" id="add_task" class="border-0 form-control"
+                           name='add_task' placeholder="Add Task">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End: Add Task -->
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='assets/js/add_task.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/complete_task.js') }}"></script>
+{% endblock %}

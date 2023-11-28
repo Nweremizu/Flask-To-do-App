@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% block title %}Tasks{% endblock %}
+{% block content %}
+    <div id="main-wrapper" class="page-wrapper" data-layout="vertical" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
+        <aside class="left-sidebar">
+            <div>
+                <!-- Start: Sidebar Logo -->
+                <div class="d-flex justify-content-between align-items-center brand-logo"><a
+                        class="text-nowrap logo-img" href="javascript:void(0)"><img
+                        src="{{ url_for('static', filename='assets/img/to_do_logo.svg') }}" width="100"></a>
+                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer">
+                        <!-- Start: second icon --><i class="ti ti-x fs-8"></i><!-- End: second icon -->
+                    </div>
+                </div><!-- End: Sidebar Logo -->
+                <nav class="sidebar-nav scroll-sidebar" id='my_nav' data-simplebar="">
+                    <ul id="sidebarnav">
+                        <!-- Start: header -->
+                        <li class="nav-small-cap">
+                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                            <span class="hide-menu">To-do</span>
+                        </li>
+                        <!-- End: header -->
+
+                        <!-- Start: Today -->
+                        <li class="sidebar-item">
+                            <a class="sidebar-link d-flex justify-content-between"
+                               href="{{ url_for('home_blueprint.home') }}"
+                               aria-expanded="false">
+                                <div class="d-flex align-items-center">
+                                    <span><i class="ti ti-calendar"></i></span>
+                                    <span class="hide-menu">Task</span>
+                                </div>
+                                <div class="badge-holder d-flex justify-content-center">
+                                    <span class="badge task-count align-self-center">{{ task_count }}</span>
+                                </div>
+                            </a>
+                        </li><!-- End: Today -->
+                        <li class="sidebar-item">
+                            <a class="sidebar-link d-flex justify-content-between"
+                               href="{{ url_for('home_blueprint.completed') }}"
+                               aria-expanded="false">
+                                <div class="d-flex align-items-center">
+                                    <span><i class="ti ti-checklist"></i></span>
+                                    <span class="hide-menu">Completed</span>
+                                </div>
+                                <div class="badge-holder d-flex justify-content-center">
+                                    <span class="badge task-count align-self-center">{{ completed_tasks_count }}</span>
+                                </div>
+                            </a>
+                        </li><!-- Start: header -->
+                        <li class="align-items-center nav-small-cap d-flex justify-content-between">
+                            <div>
+                                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span class="hide-menu">LIST</span>
+                            </div>
+                            <a href="javascript:void(0)" data-bs-target="#list-modal" data-bs-toggle="modal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                     stroke-linejoin="round" class="icon icon-tabler icon-tabler-plus fs-6">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </a>
+                        </li><!-- End: header -->
+                        {% for label in l_labels %}
+                            <li class="sidebar-item">
+                                <a class="sidebar-link d-flex justify-content-between" aria-expanded="false">
+                                    <div class="d-flex">
+                                        <span></span>
+                                        <span class="hide-menu">{{ label.name }}</span>
+                                    </div>
+                                    <div class="badge-holder d-flex justify-content-center">
+                                        <span class="badge task-count align-self-center">{{ label.count }}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+        </aside><!-- Start: Body Wrapper -->
+        <div class="body-wrapper">
+            <div class="modal fade" role="dialog" tabindex="-1" id="list-modal">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="px-4" style="text-align: right;">
+                                <button class="btn-close" type="button" aria-label="Close"
+                                        data-bs-dismiss="modal"></button>
+                            </div>
+                            <form id="label_form" method="post" action="{{ url_for('home_blueprint.add_label') }}">
+                                <div class="px-1 py-3">
+                                    <input class="form-control border-0 fs-7 list-form" name="add_label" type="text"
+                                           placeholder="Add list title">
+                                </div>
+                                <div class="px-3" style="text-align: right;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <input class="btn sub-mit" type="submit">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <header class="app-header">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <ul class="navbar-nav">
+                        <li class="nav-item d-block d-xl-none">
+                            <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse"
+                               href="javascript:void(0)">
+                                <i class="ti ti-menu-2"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="py-2">
+                                <h1 class="display-3 fw-bolder header">
+                                    Today</h1>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                                <i class="ti ti-bell-ringing"></i>
+                                <div class="notification bg-primary rounded-circle"></div>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end dropstart">
+                            <li class="nav-item dropdown dropstart">
+                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <img src="{{ url_for('auth_blueprint.get_image', m_id=current_user.id) }}" alt=""
+                                         width="35"
+                                         height="35"
+                                         class="rounded-circle">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                                     aria-labelledby="drop2">
+                                    <div class="message-body">
+                                        <a href="javascript:void(0)"
+                                           class="d-flex align-items-center gap-2 dropdown-item">
+                                            <i class="ti ti-list-check fs-6"></i>
+                                            <p class="mb-0 fs-3">{{ current_user.name }}</p>
+                                        </a>
+                                        <a href="{{ url_for('auth_blueprint.logout') }}"
+                                           class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <div id="Task-Holder" data-url="{{ url_for('home_blueprint.add_task') }}" class="py-3 mt-3">
+                            {% for task in tasks %}
+                                <div class="row rounded shadow-sm p-2 mb-4 task-item task-{{ task.id }}">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-between align-items-center py-2">
+                                            <div>
+                                                <div class="form-check fs-6" style="margin-bottom: 0px;">
+                                                    <input class="form-check-input" type="checkbox" id="formCheck-1"
+                                                           data-task-id="{{ task.id }}">
+                                                    <input id="crsf" type="hidden" name="csrf_token"
+                                                           value="{{ csrf_token() }}"/>
+                                                    <label class="form-check-label"
+                                                           for="formCheck-1">{{ task.name }}</label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <a href="" data-bs-target="#modal-{{ task.id }}" data-bs-toggle="modal">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                         fill="none" stroke-linecap="round" stroke-linejoin="round"
+                                                         class="icon icon-tabler icon-tabler-chevrons-right fs-6">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <polyline points="7 7 12 12 7 17"></polyline>
+                                                        <polyline points="13 7 18 12 13 17"></polyline>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" role="dialog" tabindex="-1" id="modal-{{ task.id }}">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="text-end mb-1">
+                                                    <a class="ms-1" data-bs-dismiss="modal" type="button">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                             class="icon icon-tabler icon-tabler-x" width="30"
+                                                             height="30" viewBox="0 0 24 24" stroke-width="1.5"
+                                                             stroke="#9e9e9e" fill="none" stroke-linecap="round"
+                                                             stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                            <path d="M18 6l-12 12"/>
+                                                            <path d="M6 6l12 12"/>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <form id="taskEditForm" class="dynamic"
+                                                          data-modal-task-id="{{ task.id }}" method="post"
+                                                          action="{{ url_for('home_blueprint.update_task', task_id=task.id) }}">
+                                                        <div class="mb-2">
+                                                            <input class="form-control border-0 fw-bold" type="text"
+                                                                   name="task_name"
+                                                                   placeholder="Task Name" value="{{ task.name }}">
+                                                        </div>
+                                                        <div class="mb-2 px-3">
+                                                            <h6 class="fw-bolder header-modal">
+                                                                NOTES</h6>
+                                                            <textarea class="form-control"
+                                                                      name="task_des"
+                                                                      placeholder="Insert Notes here"
+                                                                      style="font-size: 15px;">{{ task.description }}</textarea>
+                                                            <div class="d-flex mb-1 mt-2 px-3">
+                                                                <select class="form-select me-5" name="label">
+                                                                    <optgroup label="Choose List Group">
+                                                                        {% for label in labels %}
+                                                                            <option value="{{ label.id }}"
+                                                                                    {% if label.id == task.label_id %}
+                                                                                    selected {% endif %}>{{ label.name }}</option>
+                                                                        {% endfor %}
+                                                                    </optgroup>
+                                                                </select>
+                                                                <input type="hidden" name="csrf_token" s
+                                                                       value="{{ csrf_token() }}"/>
+                                                                <input class="form-control border-0 fw-bold" type="date"
+                                                                       name="due_date"
+                                                                       placeholder="Today" value="{{ task.due_date }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-end">
+                                                            <input class="btn btn-sm btn-primary" type="submit"
+                                                                   id="submit-bTn"
+                                                                   value="Continue">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- Start: Add Task -->
+                            <div class="row rounded p-2 mb-5">
+                                <div class="col">
+                                    <div class="py-2">
+                                        <div>
+                                            <form id="AddTaskForm" method="post"
+                                                  action="{{ url_for('home_blueprint.add_task') }}"
+                                                  class="d-flex align-items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                     viewBox="0 0 24 24"
+                                                     stroke-width="2" stroke="currentColor" fill="none"
+                                                     stroke-linecap="round"
+                                                     stroke-linejoin="round"
+                                                     class="icon icon-tabler icon-tabler-plus fs-6 addTask">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                </svg>
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                <input type="text" id="add_task" class="border-0 form-control"
+                                                       name='add_task' placeholder="Add Task">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End: Add Task -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End: Body Wrapper -->
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='assets/js/add_task.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/complete_task.js') }}"></script>
+{% endblock %}

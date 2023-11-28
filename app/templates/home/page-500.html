@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %} Error 404 {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Page content -->
+    <div class="error-page">
+        <div class="container p-0 d-flex justify-content-center">
+            <div class="card py-5 error-card px-5">
+                <div>
+                    <a class="text-nowrap logo-img text-center d-block py-3 w-100"
+                       href="#"
+                    ><img
+                            width="180"
+                            src="{{ url_for('static' , filename='/assets/img/to_do_logo-min.svg') }}"
+                            height="123"
+                    /></a>
+                </div>
+                <div class="text-muted text-center mt-2 mb-3 h1">
+                    Oups! Error 500
+                </div>
+                <div class="text-center mb-4">
+                    Error Occured - Go Back <a
+                        href="{{ url_for("home_blueprint.home") }}">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

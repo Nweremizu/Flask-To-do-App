@@ -1,0 +1,93 @@
+<ul id="sidebarnav">
+    <!-- Start: header -->
+    <li class="nav-small-cap">
+        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+        <span class="hide-menu">To-do</span>
+    </li>
+    <!-- End: header -->
+
+    <!-- Start: Today -->
+    <li class="sidebar-item">
+        <a
+            class="sidebar-link d-flex justify-content-between"
+            href="{{ url_for('home_blueprint.home') }}"
+            aria-expanded="false"
+        >
+            <div class="d-flex align-items-center">
+                <span><i class="ti ti-calendar"></i></span>
+                <span class="hide-menu">Tasks</span>
+            </div>
+            <div class="badge-holder d-flex justify-content-center">
+                <span class="badge task-count align-self-center"
+                    >{{ task_count }}</span
+                >
+            </div>
+        </a>
+    </li>
+    <!-- End: Today -->
+    <li class="sidebar-item">
+        <a
+            class="sidebar-link d-flex justify-content-between"
+            href="{{ url_for('home_blueprint.completed') }}"
+            aria-expanded="false"
+        >
+            <div class="d-flex align-items-center">
+                <span><i class="ti ti-checklist"></i></span>
+                <span class="hide-menu">Completed</span>
+            </div>
+            <div class="badge-holder d-flex justify-content-center">
+                <span class="badge task-count align-self-center"
+                    >{{ completed_tasks_count }}</span
+                >
+            </div>
+        </a>
+    </li>
+    <!-- Start: header -->
+    <li class="align-items-center nav-small-cap d-flex justify-content-between">
+        <div>
+            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+            <span class="hide-menu">LIST</span>
+        </div>
+        <a
+            href="javascript:void(0)"
+            data-bs-target="#list-modal"
+            data-bs-toggle="modal"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icon-tabler-plus fs-6"
+            >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </a>
+    </li>
+    <!-- End: header -->
+    {% for label in l_labels %}
+    <li class="sidebar-item">
+        <a
+            class="sidebar-link d-flex justify-content-between"
+            aria-expanded="false"
+        >
+            <div class="d-flex">
+                <span></span>
+                <span class="hide-menu">{{ label.name }}</span>
+            </div>
+            <div class="badge-holder d-flex justify-content-center">
+                <span class="badge task-count align-self-center"
+                    >{{ label.count }}</span
+                >
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>

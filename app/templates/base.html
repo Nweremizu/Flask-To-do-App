@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" sizes="206x150"
+          href="{{ url_for('static', filename='assets/img/to_do_logo-min.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/webfont/tabler-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/line-awesome.min.css') }}">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Flex&amp;display=swap">
+
+</head>
+
+<body>
+{% block content %}
+{% endblock %}
+<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/app.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/sidebarmenu.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/add_label.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+
+</html>
