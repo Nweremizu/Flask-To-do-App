@@ -64,7 +64,9 @@ def add_task():
         task = Task(
             name=task_name,
             user_id=current_user.id,
-            label_id=1
+            label_id=1,
+            # Intialize the due date to be the current date
+            due_date=datetime.strptime(str(datetime.now().date()), '%Y-%m-%d')
         )
         db.session.add(task)
         db.session.commit()
