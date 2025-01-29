@@ -1,5 +1,6 @@
 import os, random, string
 
+
 class Config(object):
     # Set up the App Base directory
     basedir = os.path.abspath(os.path.dirname(__file__))

@@ -1,10 +1,10 @@
-from WebApp.authentication import blueprint
+from app.authentication import blueprint
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import render_template, request, redirect, url_for, flash, Response
-from WebApp.authentication.models import User
-from WebApp.authentication.util import create_image
-from WebApp import login_manager, db
+from app.authentication.models import User
+from app.authentication.util import create_image
+from app import login_manager, db
 import os
 
 # get the assets folder from the config file
