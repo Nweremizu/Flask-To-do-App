@@ -1,8 +1,8 @@
 from sqlalchemy import or_, and_
-from app.home import blueprint
-from app.authentication.models import Task, Label
+from WebApp.home import blueprint
+from WebApp.authentication.models import Task, Label
 from datetime import datetime
-from app import db
+from WebApp import db
 from flask import render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 
